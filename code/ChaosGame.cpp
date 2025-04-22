@@ -19,6 +19,9 @@ int main()
 	vector<Vector2f> vertices;
 	vector<Vector2f> points;
 
+	//TO DO: CHANGE OUTPUT FROM CONSOLE TO GAME SCREEN
+	cout << "Click three points on the screen to create your triangle" << endl;
+
 	while (window.isOpen())
 	{
 		/*
