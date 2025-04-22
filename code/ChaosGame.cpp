@@ -32,30 +32,8 @@ int main()
 		Event event;
 		while (window.pollEvent(event))
 		{
-		    if (event.type == Event::Closed)
-		    {
-					// Quit the game when the window is closed
-					window.close();
-		    }
-		    if (event.type == sf::Event::MouseButtonPressed)
-		    {
-			if (event.mouseButton.button == sf::Mouse::Left)
-			{
-			    std::cout << "the left button was pressed" << std::endl;
-			    std::cout << "mouse x: " << event.mouseButton.x << std::endl;
-			    std::cout << "mouse y: " << event.mouseButton.y << std::endl;
-	
-			    if(vertices.size() < 3)
-			    {
-				vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
-			    }
-			    else if(points.size() == 0)
-			    {
-				///fourth click
-				///push back to points vector
-			    }
-			}
-		    }
+			// TEMPORARY MODULE - MOUSE CLICK EVENTS			
+			#include "ClickEvents.cpp"
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Escape))
 		{
@@ -67,13 +45,8 @@ int main()
 		****************************************
 		*/
 	
-		if(points.size() > 0)
-		{
-		    ///generate more point(s)
-		    ///select random vertex
-		    ///calculate midpoint between random vertex and the last point in the vector
-		    ///push back the newly generated coord.
-		}
+		// TEMPORARY MODULE - GENERATE NEW CHAOS GAME POINTS		
+		#include "GenerateChaosPoints.cpp"
 	
 		/*
 		****************************************
@@ -82,33 +55,17 @@ int main()
 		*/
 		window.clear();
 
-		// Draw gradient background
-		Color BG1(100, 150, 180);
-		Color BG2(0, 0, 0);
-		const int BG_STRIP_HEIGHT = 10;
+		// TEMPORARY MODULE - GRADIENT BACKGROUND
+		#include "GradientBackground.cpp"
 
-		Color ColorStep(((BG1.r - BG2.r) / (vm.height / BG_STRIP_HEIGHT)), ((BG1.g - BG2.g) / (vm.height / BG_STRIP_HEIGHT)), ((BG1.b - BG2.b) / (vm.height / BG_STRIP_HEIGHT)));
+		// TEMPORARY MODULE - TEXT PROMPTS
+		#include "TextPrompts.cpp"
 
-		for (int i = 0; i < vm.height / BG_STRIP_HEIGHT; i++)
-		{
-			RectangleShape testLine(Vector2f(vm.width, i * BG_STRIP_HEIGHT));
-			testLine.setPosition(Vector2f(0, i * BG_STRIP_HEIGHT));
-			testLine.setFillColor(BG1);
-			window.draw(testLine);
-			BG1 += ColorStep;
-		}
-
-		// Draw User-defined Points
-		for(int i = 0; i < vertices.size(); i++)
-		{
-			RectangleShape rect(Vector2f(10,10));
-		    rect.setPosition(Vector2f(vertices[i].x, vertices[i].y));
-			rect.setFillColor(Color::Blue);
-			rect.rotate(45);
-			window.draw(rect);
-		}
+		// TEMPORARY MODULE - DRAW USER SHAPE / CLICKED VERTICES		
+		#include "DrawUserShape.cpp"
 		
-		///TODO:  Draw points
+		// TEMPORARY MODULE - DRAW CHAOS POINTS
+		#include "DrawChaosPoints.cpp"
 
 
 		window.display();
