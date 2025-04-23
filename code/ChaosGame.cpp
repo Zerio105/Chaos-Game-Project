@@ -19,6 +19,12 @@ int main()
 	vector<Vector2f> vertices;
 	vector<Vector2f> points;
 
+	//TO DO: CHANGE OUTPUT FROM CONSOLE TO GAME SCREEN
+	cout << "Click three points on the screen to create your triangle" << endl;
+
+	//FOR VERIFYING FOURTH CLICK MESSAGE
+	bool fourthClick = false;
+
 	while (window.isOpen())
 	{
 		/*
@@ -29,6 +35,13 @@ int main()
 		Event event;
 		while (window.pollEvent(event))
 		{
+			//THIS CHECKS IF TRIANGLE IS FORMED. IF YES, IT ASKS FOR STARTING POINT.
+			if (!fourthClick && vertices.size() >= 3) 
+			{
+			//TODO: CHANGE OUTPUT FROM CONSOLE TO GAME SCREEN
+			cout << "Click a fourth point to begin the sequence" << endl;
+			fourthClick = true;
+			}
 			if (event.type == Event::Closed)
 			{
 				// Quit the game when the window is closed
