@@ -90,14 +90,16 @@ int main()
 					std::cout << "mouse x: " << event.mouseButton.x << std::endl;
 					std::cout << "mouse y: " << event.mouseButton.y << std::endl;
 
+					// >> If there are not enough vertices to form a triangle, add the clicked area to the shape
 					if (vertices.size() < 3)
 					{
 						vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
 					}
+
+					// >> Otherwise, if there are no points for the Chaos Algorithm, add the first one at the clicked area
 					else if (points.size() == 0)
 					{
-						///fourth click
-						///push back to points vector
+						points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
 					}
 				}
 			}
@@ -178,6 +180,18 @@ int main()
 				//RectangleShape line = ConfigureLine(vertices[i], vertices[i + 1]);
 				//window.draw(line);
 			}
+		}
+
+		// >> Draw all existing points for Chaos Algorithm
+		for (int i = 0; i < points.size(); i++)
+		{
+			// >> Create a RectangleShape, move it to the correct position, color it, and rotate it 45 degrees to become a diamond shape
+			RectangleShape rect(Vector2f(5, 5));
+			rect.setPosition(Vector2f(points[i].x, points[i].y - 2.5));
+			rect.setFillColor(Color::White);
+			rect.rotate(45);
+			// >> Draw the created shape to the screen
+			window.draw(rect);
 		}
 
 		///TODO:  Draw points
