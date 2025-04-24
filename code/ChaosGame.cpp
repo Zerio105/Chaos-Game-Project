@@ -111,7 +111,7 @@ int main()
 			if (!fourthClick && vertices.size() >= 3)
 			{
 				// >> Changes prompt text
-				userPrompt.setString("Click on a fourth point to begin the Chaos Algorithm.");
+				userPrompt.setString("Continue adding points, or right click to begin the Chaos Algorithm.");
 				fourthClick = true;
 			}
 
@@ -128,20 +128,18 @@ int main()
 					std::cout << "mouse x: " << event.mouseButton.x << std::endl;
 					std::cout << "mouse y: " << event.mouseButton.y << std::endl;
 
-					// >> If there are not enough vertices to form a triangle, add the clicked area to the shape
-					if (vertices.size() < 3)
-					{
-						vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
-						RectangleShape nextVertex(Vector2f(10, 10));
-						nextVertex.setOrigin(5, 5);
-						nextVertex.setPosition(Vector2f(event.mouseButton.x, event.mouseButton.y));
-						nextVertex.setFillColor(Color::Blue);
-						nextVertex.rotate(45.0);
-						visualVertices.push_back(nextVertex);
-					}
+					vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
+					RectangleShape nextVertex(Vector2f(10, 10));
+					nextVertex.setOrigin(5, 5);
+					nextVertex.setPosition(Vector2f(event.mouseButton.x, event.mouseButton.y));
+					nextVertex.setFillColor(Color::Blue);
+					nextVertex.rotate(45.0);
+					visualVertices.push_back(nextVertex);
 
-					// >> Otherwise, if there are no points for the Chaos Algorithm, add the first one at the clicked area
-					else if (points.size() == 0)
+				}
+				else if (event.mouseButton.button == sf::Mouse::Right)
+				{
+					if (points.size() == 0)
 					{
 						points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
 
@@ -198,7 +196,7 @@ int main()
 		// >> Draw user-defined points
 		// >> Check if there are at least three points present, to determine if shape or vertices are rendered
 		// >> (If squares and larger shapes are included, change the way this is checked)
-		if (vertices.size() < 3)
+		if (points.size() < 1)
 		{
 			// >> Display each vertex as its own point
 			for (int i = 0; i < vertices.size(); i++)
