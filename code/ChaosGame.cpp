@@ -41,7 +41,7 @@ void DrawLine(RenderWindow& inWindow, Vector2f point1, Vector2f point2)
 	inWindow.draw(line, 2, sf::Lines);
 }
 
-		// >> !! UNFINISHED !! Has issues with determining which angle to rotate the shape to
+// >> !! UNFINISHED !! Has issues with determining which angle to rotate the shape to
 
 // >> ConfigureLine - Creates a "line" RectangleShape between two points returns the object.
 // >> Arguments are its start and end point as a Vector2f, as well as optional variables for color and line thickness
@@ -81,7 +81,9 @@ int main()
 	// >> Load font: Berlin Sans FB Demi
 	Font berlinSans;
 	if (!berlinSans.loadFromFile("BRLNSDB.TTF"))
-	{ cout << "Error: Font cannot be loaded" << endl; }
+	{
+		cout << "Error: Font cannot be loaded" << endl;
+	}
 
 	// >> Define starter user prompt and text style
 	Text userPrompt;
@@ -216,9 +218,9 @@ int main()
 				// >> Use DrawLine function to draw a line between each vertex. If on the final vertex, draw it to the first one.
 				DrawLine(window, vertices[i], (i == vertices.size() - 1 ? vertices[0] : vertices[i + 1]));
 
-					// >> Following code is temporarily commented out, as it uses the faulty "thick line" function. If that can be fixed, switch back to this method.
-				//RectangleShape line = ConfigureLine(vertices[i], vertices[i + 1]);
-				//window.draw(line);
+				// >> Following code is temporarily commented out, as it uses the faulty "thick line" function. If that can be fixed, switch back to this method.
+			//RectangleShape line = ConfigureLine(vertices[i], vertices[i + 1]);
+			//window.draw(line);
 			}
 		}
 
