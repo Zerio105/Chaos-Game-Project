@@ -10,6 +10,23 @@
 using namespace sf;
 using namespace std;
 
+// >> InitializeBackground - Stores individual Color values into a vector to easily be accessed when drawing the gradient background
+// >> Arguments are a vector of colors to function as a container, the height of each background strip, and the current VideoMode object to reference height
+void InitializeBackground(vector<Color>& gradientContainer, int stripHeight, VideoMode& inMode)
+{
+	// >> Define start and end colors
+	Color BG1(100, 150, 180);
+	Color BG2(0, 0, 0);
+	// >> Calculate the amount each color should change per "step"
+	Color ColorStep(((BG1.r - BG2.r) / (inMode.height / stripHeight)), ((BG1.g - BG2.g) / (inMode.height / stripHeight)), ((BG1.b - BG2.b) / (inMode.height / stripHeight)));
+	// >> Add each iterated color to the container, then iterate it further
+	for (int i = 0; i < inMode.height / (stripHeight); i++)
+	{
+		gradientContainer.push_back(BG1);
+		BG1 += ColorStep;
+	}
+}
+
 // >> DrawLine - Draws a simple thin line between two vector points.
 // >> Arguments are the window to render to, followed by the start and end points.
 void DrawLine(RenderWindow& inWindow, Vector2f point1, Vector2f point2)
@@ -52,6 +69,11 @@ int main()
 
 	vector<Vector2f> vertices;
 	vector<Vector2f> points;
+
+	// >> Initialize background gradient information
+	const int BG_STRIP_HEIGHT = 20;
+	vector<Color> gradient;
+	InitializeBackground(gradient, BG_STRIP_HEIGHT, vm);
 
 	//TO DO: CHANGE OUTPUT FROM CONSOLE TO GAME SCREEN
 	cout << "Click three points on the screen to create your triangle" << endl;
@@ -129,25 +151,15 @@ int main()
 		*/
 		window.clear();
 
-		// >> Construct a gradient background
-		// >> (Note to maybe find a way to optimize this once the rest of the project works; probably isn't best to make this all calculate every frame whoops)
-
-		// >> Define start and end colors and height of each strip of color
-		Color BG1(100, 150, 180);
-		Color BG2(0, 0, 0);
-		const int BG_STRIP_HEIGHT = 20;
-
-		// >> Calculate the amount each color should change per "step"
-		Color ColorStep(((BG1.r - BG2.r) / (vm.height / BG_STRIP_HEIGHT)), ((BG1.g - BG2.g) / (vm.height / BG_STRIP_HEIGHT)), ((BG1.b - BG2.b) / (vm.height / BG_STRIP_HEIGHT)));
-
-		// >> Create and display each step of the background, iterate the color through each time
-		for (int i = 0; i < vm.height / (BG_STRIP_HEIGHT); i++)
+		// >> Display the gradient background
+		int bgHeight = 0;
+		for (Color currColor : gradient)
 		{
-			RectangleShape testLine(Vector2f(vm.width, i * BG_STRIP_HEIGHT));
-			testLine.setPosition(Vector2f(0, (i - 1) * BG_STRIP_HEIGHT));
-			testLine.setFillColor(BG1);
+			RectangleShape testLine(Vector2f(vm.width, bgHeight * BG_STRIP_HEIGHT));
+			testLine.setPosition(Vector2f(0, (bgHeight - 1) * BG_STRIP_HEIGHT));
+			testLine.setFillColor(currColor);
 			window.draw(testLine);
-			BG1 += ColorStep;
+			bgHeight++;
 		}
 
 		// >> Draw user-defined points
