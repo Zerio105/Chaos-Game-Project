@@ -97,6 +97,9 @@ int main()
 	// >> For verifying fourth click message
 	bool fourthClick = false;
 
+	// >> Initialize prevCorner
+	int prevCorner = -1;
+
 	while (window.isOpen())
 	{
 		/*
@@ -112,7 +115,6 @@ int main()
 			{
 				// >> Changes prompt text
 				userPrompt.setString("Continue adding points, or right click to begin the Chaos Algorithm.");
-				fourthClick = true;
 			}
 
 			if (event.type == Event::Closed)
@@ -149,7 +151,7 @@ int main()
 						nextPoint.setFillColor(Color::White);
 						nextPoint.rotate(45.0);
 						visualPoints.push_back(nextPoint);
-
+						fourthClick = true;
 						userPrompt.setString("Chaos Algorithm in progress...");
 					}
 				}
@@ -241,10 +243,19 @@ int main()
 		{
 			// >> Gets location of previous point and then chooses a corner at random.
 			int prevPoint = points.size() - 1;
-			int chosenCorner = rand() % 3;
+			int chosenCorner = rand() % vertices.size();
+			if (vertices.size() != 3)
+			{
+				while (chosenCorner == prevCorner)
+				{
+					chosenCorner = rand() % vertices.size();
+				}
+			}
 			// >> Pushes back a new vector2f into points at the midpoint between points[prevPoint] and vertices[chosenCorner]
 			Vector2f currentVector((vertices.at(chosenCorner).x + points.at(prevPoint).x) / 2, (vertices.at(chosenCorner).y + points.at(prevPoint).y) / 2);
 			points.push_back(currentVector);
+
+			prevCorner = chosenCorner;
 
 			RectangleShape nextPoint(Vector2f(2, 2));
 			nextPoint.setPosition(currentVector);
