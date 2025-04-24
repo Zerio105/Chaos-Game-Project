@@ -122,24 +122,25 @@ int main()
 			}
 			if (event.type == sf::Event::MouseButtonPressed)
 			{
+				// >> Left click - Adds new vertices to shape, as long as the algorithm is not already running
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
-					std::cout << "the left button was pressed" << std::endl;
-					std::cout << "mouse x: " << event.mouseButton.x << std::endl;
-					std::cout << "mouse y: " << event.mouseButton.y << std::endl;
-
-					vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
-					RectangleShape nextVertex(Vector2f(10, 10));
-					nextVertex.setOrigin(5, 5);
-					nextVertex.setPosition(Vector2f(event.mouseButton.x, event.mouseButton.y));
-					nextVertex.setFillColor(Color::Blue);
-					nextVertex.rotate(45.0);
-					visualVertices.push_back(nextVertex);
+					if (points.size() == 0)
+					{
+						vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
+						RectangleShape nextVertex(Vector2f(10, 10));
+						nextVertex.setOrigin(5, 5);
+						nextVertex.setPosition(Vector2f(event.mouseButton.x, event.mouseButton.y));
+						nextVertex.setFillColor(Color::Blue);
+						nextVertex.rotate(45.0);
+						visualVertices.push_back(nextVertex);
+					}
 
 				}
+				// >> Right click - Begins the algorithm if it is not already running and if there are three or more points on the shape
 				else if (event.mouseButton.button == sf::Mouse::Right)
 				{
-					if (points.size() == 0)
+					if ((points.size() == 0) && (vertices.size() > 2))
 					{
 						points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
 
