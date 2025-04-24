@@ -63,15 +63,22 @@ RectangleShape ConfigureLine(Vector2f point1, Vector2f point2, Color lineColor =
 int main()
 {
 	// Create a video mode object (>>original default is 1920 x 1080)
-	VideoMode vm(960, 540);
+	VideoMode vm(1366, 768);
 	// Create and open a window for the game
 	RenderWindow window(vm, "Chaos Game!!", Style::Default);
 
+	// >> Vertices and points as pure coordinates
 	vector<Vector2f> vertices;
 	vector<Vector2f> points;
 
+	// >> Visual vertices and points as shapes
 	vector<RectangleShape> visualVertices;
 	vector<RectangleShape> visualPoints;
+
+	// >> Extra visual effect definitions
+	vector<RectangleShape> echoVertices;		// Echo Vertices, shapes that appear temporarily and fade out when adding new vertices
+	Color echoStart(180, 210, 250);				// The color Echo Vertices start as
+	Color echoStep(0, 0, 0, 2);					// The amount of alpha to remove from Echo Vertices per frame, so they fade out
 
 	// >> Initialize background gradient information
 	const int BG_STRIP_HEIGHT = 20;
@@ -136,6 +143,10 @@ int main()
 						nextVertex.setFillColor(Color::Blue);
 						nextVertex.rotate(45.0);
 						visualVertices.push_back(nextVertex);
+
+						nextVertex.setFillColor(echoStart);
+						nextVertex.rotate(45.0);
+						echoVertices.push_back(nextVertex);
 					}
 
 				}
@@ -146,7 +157,7 @@ int main()
 					{
 						points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
 
-						RectangleShape nextPoint(Vector2f(2, 2));
+						RectangleShape nextPoint(Vector2f(0.05, 0.05));
 						nextPoint.setPosition(event.mouseButton.x, event.mouseButton.y);
 						nextPoint.setFillColor(Color::White);
 						nextPoint.rotate(45.0);
@@ -191,6 +202,18 @@ int main()
 			testLine.setFillColor(currColor);
 			window.draw(testLine);
 			bgHeight++;
+		}
+
+		// >> Draw "echo vertices," a visual effect when placing new vertices
+		for (int i = 0; i < echoVertices.size(); i++)
+		{
+			if (echoVertices[i].getFillColor().a > 0.0)
+			{
+				echoVertices[i].setScale(echoVertices[i].getScale() + Vector2f(0.5, 0.5));
+				echoVertices[i].rotate(1);
+				echoVertices[i].setFillColor(echoVertices[i].getFillColor() - echoStep);
+				window.draw(echoVertices[i]);
+			}
 		}
 
 		// >> Display text to prompt the user
@@ -257,7 +280,7 @@ int main()
 
 			prevCorner = chosenCorner;
 
-			RectangleShape nextPoint(Vector2f(2, 2));
+			RectangleShape nextPoint(Vector2f(0.005, 0.005));
 			nextPoint.setPosition(currentVector);
 			nextPoint.setFillColor(Color::White);
 			nextPoint.rotate(45.0);
