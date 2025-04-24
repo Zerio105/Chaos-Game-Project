@@ -78,7 +78,7 @@ int main()
 	//TO DO: CHANGE OUTPUT FROM CONSOLE TO GAME SCREEN
 	cout << "Click three points on the screen to create your triangle" << endl;
 
-	//FOR VERIFYING FOURTH CLICK MESSAGE
+	// >> For verifying fourth click message
 	bool fourthClick = false;
 
 	while (window.isOpen())
@@ -91,7 +91,7 @@ int main()
 		Event event;
 		while (window.pollEvent(event))
 		{
-			//THIS CHECKS IF TRIANGLE IS FORMED. IF YES, IT ASKS FOR STARTING POINT.
+			// >> Checks if triangle is formed, If yes, it asks for starting point.
 			if (!fourthClick && vertices.size() >= 3)
 			{
 				//TODO: CHANGE OUTPUT FROM CONSOLE TO GAME SCREEN
@@ -205,8 +205,18 @@ int main()
 			// >> Draw the created shape to the screen
 			window.draw(rect);
 		}
+		///TODO: Draw points
+		if (points.size() != 0 && vertices.size() >= 3)
+		{
+			// >> Gets location of previous point and then chooses a corner at random.
+			int prevPoint = points.size() - 1;
+			int chosenCorner = rand() % 3;
+			// >> Pushes back a new vector2f into points at the midpoint between points[prevPoint] and vertices[chosenCorner]
+			points.push_back(Vector2f((vertices.at(chosenCorner).x + points.at(prevPoint).x) / 2, (vertices.at(chosenCorner).y + points.at(prevPoint).y) / 2));
+		}
 
-		///TODO:  Draw points
+
+
 		window.display();
 	}
 }
