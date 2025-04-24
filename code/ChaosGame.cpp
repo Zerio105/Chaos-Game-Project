@@ -1,3 +1,5 @@
+// PROJECT COMPLETED BY TYLER NORDIN & IVAN BERNIKER.
+
 // Include important C++ libraries here
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
