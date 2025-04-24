@@ -70,15 +70,29 @@ int main()
 	vector<Vector2f> vertices;
 	vector<Vector2f> points;
 
+	vector<RectangleShape> visualVertices;
+	vector<RectangleShape> visualPoints;
+
 	// >> Initialize background gradient information
 	const int BG_STRIP_HEIGHT = 20;
 	vector<Color> gradient;
 	InitializeBackground(gradient, BG_STRIP_HEIGHT, vm);
 
-	//TO DO: CHANGE OUTPUT FROM CONSOLE TO GAME SCREEN
-	cout << "Click three points on the screen to create your triangle" << endl;
+	// >> Load font: Berlin Sans FB Demi
+	Font berlinSans;
+	if (!berlinSans.loadFromFile("BRLNSDB.TTF"))
+	{ cout << "Error: Font cannot be loaded" << endl; }
 
-	//FOR VERIFYING FOURTH CLICK MESSAGE
+	// >> Define starter user prompt and text style
+	Text userPrompt;
+	userPrompt.setFont(berlinSans);
+	userPrompt.setString("Click on any three points to define a triangle.");
+	userPrompt.setCharacterSize(24);
+	userPrompt.setFillColor(Color::White);
+	userPrompt.setStyle(Text::Bold);
+	userPrompt.setPosition(10, 10);
+
+	// >> For verifying fourth click message
 	bool fourthClick = false;
 
 	while (window.isOpen())
@@ -91,11 +105,11 @@ int main()
 		Event event;
 		while (window.pollEvent(event))
 		{
-			//THIS CHECKS IF TRIANGLE IS FORMED. IF YES, IT ASKS FOR STARTING POINT.
+			// >> Checks if triangle is formed, If yes, it asks for starting point.
 			if (!fourthClick && vertices.size() >= 3)
 			{
-				//TODO: CHANGE OUTPUT FROM CONSOLE TO GAME SCREEN
-				cout << "Click a fourth point to begin the sequence" << endl;
+				// >> Changes prompt text
+				userPrompt.setString("Click on a fourth point to begin the Chaos Algorithm.");
 				fourthClick = true;
 			}
 
@@ -116,12 +130,26 @@ int main()
 					if (vertices.size() < 3)
 					{
 						vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
+						RectangleShape nextVertex(Vector2f(10, 10));
+						nextVertex.setOrigin(5, 5);
+						nextVertex.setPosition(Vector2f(event.mouseButton.x, event.mouseButton.y));
+						nextVertex.setFillColor(Color::Blue);
+						nextVertex.rotate(45.0);
+						visualVertices.push_back(nextVertex);
 					}
 
 					// >> Otherwise, if there are no points for the Chaos Algorithm, add the first one at the clicked area
 					else if (points.size() == 0)
 					{
 						points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
+
+						RectangleShape nextPoint(Vector2f(2, 2));
+						nextPoint.setPosition(event.mouseButton.x, event.mouseButton.y);
+						nextPoint.setFillColor(Color::White);
+						nextPoint.rotate(45.0);
+						visualPoints.push_back(nextPoint);
+
+						userPrompt.setString("Chaos Algorithm in progress...");
 					}
 				}
 			}
@@ -162,6 +190,9 @@ int main()
 			bgHeight++;
 		}
 
+		// >> Display text to prompt the user
+		window.draw(userPrompt);
+
 		// >> Draw user-defined points
 		// >> Check if there are at least three points present, to determine if shape or vertices are rendered
 		// >> (If squares and larger shapes are included, change the way this is checked)
@@ -171,12 +202,9 @@ int main()
 			for (int i = 0; i < vertices.size(); i++)
 			{
 				// >> Create a RectangleShape, move it to the correct position, color it, and rotate it 45 degrees to become a diamond shape
-				RectangleShape rect(Vector2f(10, 10));
-				rect.setPosition(Vector2f(vertices[i].x, vertices[i].y - 5));
-				rect.setFillColor(Color::Blue);
-				rect.rotate(45);
+				visualVertices[i].rotate(1);
 				// >> Draw the created shape to the screen
-				window.draw(rect);
+				window.draw(visualVertices[i]);
 			}
 		}
 		// >> If not in "individual vertices" mode, draw the triangle itself
@@ -198,6 +226,7 @@ int main()
 		for (int i = 0; i < points.size(); i++)
 		{
 			// >> Create a RectangleShape, move it to the correct position, color it, and rotate it 45 degrees to become a diamond shape
+			window.draw(visualPoints[i]);
 			RectangleShape rect(Vector2f(5, 5));
 			rect.setPosition(Vector2f(points[i].x, points[i].y - 2.5));
 			rect.setFillColor(Color::White);
@@ -206,7 +235,22 @@ int main()
 			window.draw(rect);
 		}
 
-		///TODO:  Draw points
+		// >> Generate new Chaos Algorithm points
+		if (points.size() != 0 && vertices.size() >= 3)
+		{
+			// >> Gets location of previous point and then chooses a corner at random.
+			int prevPoint = points.size() - 1;
+			int chosenCorner = rand() % 3;
+			// >> Pushes back a new vector2f into points at the midpoint between points[prevPoint] and vertices[chosenCorner]
+			Vector2f currentVector((vertices.at(chosenCorner).x + points.at(prevPoint).x) / 2, (vertices.at(chosenCorner).y + points.at(prevPoint).y) / 2);
+			points.push_back(currentVector);
+
+			RectangleShape nextPoint(Vector2f(2, 2));
+			nextPoint.setPosition(currentVector);
+			nextPoint.setFillColor(Color::White);
+			nextPoint.rotate(45.0);
+			visualPoints.push_back(nextPoint);
+		}
 		window.display();
 	}
 }
