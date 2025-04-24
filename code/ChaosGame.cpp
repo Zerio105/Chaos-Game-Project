@@ -85,16 +85,7 @@ int main()
 		cout << "Error: Font cannot be loaded" << endl;
 	}
 
-	// >> Define starter user prompt and text style
-	Text userPrompt;
-	userPrompt.setFont(berlinSans);
-	userPrompt.setString("Click on any three points to define a triangle.");
-	userPrompt.setCharacterSize(24);
-	userPrompt.setFillColor(Color::White);
-	userPrompt.setStyle(Text::Bold);
-	userPrompt.setPosition(10, 10);
-
-	// >> For verifying fourth click message
+	//FOR VERIFYING FOURTH CLICK MESSAGE
 	bool fourthClick = false;
 
 	while (window.isOpen())
@@ -236,23 +227,17 @@ int main()
 			// >> Draw the created shape to the screen
 			window.draw(rect);
 		}
-
-		// >> Generate new Chaos Algorithm points
+		///TODO: Draw points
 		if (points.size() != 0 && vertices.size() >= 3)
 		{
 			// >> Gets location of previous point and then chooses a corner at random.
 			int prevPoint = points.size() - 1;
 			int chosenCorner = rand() % 3;
 			// >> Pushes back a new vector2f into points at the midpoint between points[prevPoint] and vertices[chosenCorner]
-			Vector2f currentVector((vertices.at(chosenCorner).x + points.at(prevPoint).x) / 2, (vertices.at(chosenCorner).y + points.at(prevPoint).y) / 2);
-			points.push_back(currentVector);
-
-			RectangleShape nextPoint(Vector2f(2, 2));
-			nextPoint.setPosition(currentVector);
-			nextPoint.setFillColor(Color::White);
-			nextPoint.rotate(45.0);
-			visualPoints.push_back(nextPoint);
+			points.push_back(Vector2f((vertices.at(chosenCorner).x + points.at(prevPoint).x) / 2, (vertices.at(chosenCorner).y + points.at(prevPoint).y) / 2));
 		}
+
+		///TODO:  Draw points
 		window.display();
 	}
 }
