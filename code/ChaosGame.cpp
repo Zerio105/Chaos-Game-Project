@@ -89,7 +89,7 @@ int main()
 
 	// >> Load font: Berlin Sans FB Demi
 	Font berlinSans;
-	if (!berlinSans.loadFromFile("BRLNSDB.TTF"))
+	if (!berlinSans.loadFromFile("code/BRLNSDB.TTF"))
 	{
 		cout << "Error: Font cannot be loaded" << endl;
 	}
