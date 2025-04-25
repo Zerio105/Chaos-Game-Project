@@ -174,25 +174,7 @@ int main()
 		{
 			window.close();
 		}
-		/*
-		****************************************
-		Update
-		****************************************
-		*/
 
-		if (points.size() > 0)
-		{
-			///generate more point(s)
-			///select random vertex
-			///calculate midpoint between random vertex and the last point in the vector
-			///push back the newly generated coord.
-		}
-
-		/*
-		****************************************
-		Draw
-		****************************************
-		*/
 		window.clear();
 
 		// >> Display the gradient background
